@@ -460,9 +460,9 @@ function sortByAsc(arr) {
   for (let i = 0; i < n - 1; i += 1) {
     for (let j = 0; j < n - 1 - i; j += 1) {
       if (arr[j + 1] < arr[j]) {
-        const t = arr[j + 1];
+        const temp = arr[j + 1];
         out[j + 1] = arr[j];
-        out[j] = t;
+        out[j] = temp;
       }
     }
   }
