@@ -544,8 +544,56 @@ function shuffleChar(str, iterations) {
  * @param {number} number The source number
  * @returns {number} The nearest larger number, or original number if none exists.
  */
-function getNearestBigger(/* number */) {
-  throw new Error('Not implemented');
+function getNearestBigger(number) {
+  const stringMain = `${number}`;
+  let subString1 = '';
+  let subString2 = '';
+  let permArr = [];
+  const usedChars = [];
+  let out;
+  function subStr(ind2, ind1) {
+    for (let i = ind2; i >= ind1; i -= 1) {
+      subString1 = stringMain[i] + subString1;
+    }
+    for (let i = 0; i < ind1; i += 1) {
+      subString2 += stringMain[i];
+    }
+  }
+
+  function getVariants(input) {
+    let i;
+    let ch;
+    const someIndex = 0;
+    for (i = 0; i < input.length; i += 1) {
+      ch = input.splice(i, 1)[someIndex];
+      usedChars.push(ch);
+      if (
+        input.length === 0 &&
+        +`${subString2}${+usedChars.join('')}` > number
+      ) {
+        permArr.push(+usedChars.join(''));
+      }
+      getVariants(input);
+      input.splice(i, 0, ch);
+      usedChars.pop();
+    }
+  }
+
+  for (let i = 2; i < stringMain.length; i += 1) {
+    subString1 = '';
+    subString2 = '';
+    subStr(stringMain.length - 1, stringMain.length - i);
+    getVariants([...subString1]);
+    if (permArr.length > 0) {
+      const temp = permArr.sort(function unnamed(a, b) {
+        return a - b;
+      });
+      out = +`${subString2}${temp[0]}`;
+      break;
+    }
+    permArr = [];
+  }
+  return out;
 }
 
 module.exports = {
