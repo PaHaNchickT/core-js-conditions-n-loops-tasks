@@ -561,10 +561,9 @@ function getNearestBigger(number) {
   }
 
   function getVariants(input) {
-    let i;
     let ch;
     const someIndex = 0;
-    for (i = 0; i < input.length; i += 1) {
+    for (let i = 0; i < input.length; i += 1) {
       ch = input.splice(i, 1)[someIndex];
       usedChars.push(ch);
       if (
