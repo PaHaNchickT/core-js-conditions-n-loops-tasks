@@ -457,33 +457,52 @@ function rotateMatrix(matrix) {
 
 function sortByAsc(arr) {
   const out = arr;
-  let tempOut;
-  function GnomeSort(A) {
-    const tempA = A;
-    const n = A.length;
-    let i = 1;
-    let j = 2;
-    while (i < n) {
-      if (tempA[i - 1] < tempA[i]) {
-        i = j;
-        j += 1;
+  function Merge(a, low, mid, high) {
+    const b = new Array(high + 1 - low);
+    let j = mid + 1;
+    let k;
+    let h = low;
+    let i = 0;
+    const tempA = a;
+    while (h <= mid && j <= high) {
+      if (a[h] <= a[j]) {
+        b[i] = a[h];
+        h += 1;
       } else {
-        const t = tempA[i - 1];
-        tempA[i - 1] = tempA[i];
-        tempA[i] = t;
-        i -= 1;
-        if (i === 0) {
-          i = j;
-          j += 1;
-        }
+        b[i] = a[j];
+        j += 1;
+      }
+      i += 1;
+    }
+    if (h > mid) {
+      for (k = j; k <= high; k += 1) {
+        b[i] = a[k];
+        i += 1;
+      }
+    } else {
+      for (k = h; k <= mid; k += 1) {
+        b[i] = a[k];
+        i += 1;
       }
     }
-    tempOut = tempA;
+    for (k = 0; k <= high - low; k += 1) tempA[k + low] = b[k];
+    return a;
   }
-  GnomeSort(arr);
-  for (let i = 0; i < arr.length; i += 1) {
-    out[i] = tempOut[i];
+
+  function MergeSort(A) {
+    function mergeSort2(a, low, high) {
+      if (low < high) {
+        const mid = Math.floor((low + high) / 2);
+        mergeSort2(a, low, mid);
+        mergeSort2(a, mid + 1, high);
+        Merge(a, low, mid, high);
+      }
+    }
+    const n = A.length;
+    mergeSort2(A, 0, n - 1);
+    return A;
   }
+  MergeSort(out);
   return arr;
 }
 
